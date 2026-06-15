@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="container">
+    <h1><%= title %></h1>
+    <a class="button" href="/pets/new">Cadastrar novo pet</a>
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Espécie</th>
+          <th>Dono</th>
+          <th>Próxima vacina</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (pets.length === 0) { %>
+          <tr><td colspan="5">Nenhum pet cadastrado ainda.</td></tr>
+        <% } else { %>
+          <% pets.forEach((pet) => { %>
+            <tr>
+              <td><%= pet.name %></td>
+              <td><%= pet.species %></td>
+              <td><%= pet.ownerName || '-' %></td>
+              <td><%= pet.vaccines.length ? pet.vaccines[0].nextDate || '-' : '-' %></td>
+              <td>
+                <a href="/pets/<%= pet.id %>">Ver</a>
+                <a href="/pets/<%= pet.id %>/edit">Editar</a>
+                <form action="/pets/<%= pet.id %>/delete" method="POST" class="inline-form">
+                  <button type="submit" class="button button-danger">Excluir</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        <% } %>
+      </tbody>
+    </table>
+    <a class="button button-secondary" href="/">Voltar</a>
+  </main>
+</body>
+</html>

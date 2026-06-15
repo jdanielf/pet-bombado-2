@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="container">
+    <h1><%= title %></h1>
+    <form action="<%= action %>" method="POST" class="form-grid">
+      <section>
+        <h2>Dados do pet</h2>
+        <label>Nome<br /><input type="text" name="name" value="<%= pet?.name || '' %>" required /></label>
+        <label>Espécie<br />
+          <select name="species" required>
+            <option value="" disabled <%= !pet?.species ? 'selected' : '' %>>Selecione</option>
+            <option value="Cachorro" <%= pet?.species === 'Cachorro' ? 'selected' : '' %>>Cachorro</option>
+            <option value="Gato" <%= pet?.species === 'Gato' ? 'selected' : '' %>>Gato</option>
+          </select>
+        </label>
+        <label>Raça<br /><input type="text" name="breed" value="<%= pet?.breed || '' %>" /></label>
+        <label>Gênero<br /><input type="text" name="gender" value="<%= pet?.gender || '' %>" /></label>
+        <label>Data de nascimento<br /><input type="date" name="birthDate" value="<%= pet?.birthDate || '' %>" /></label>
+      </section>
+
+      <section>
+        <h2>Dados do dono</h2>
+        <label>Nome do responsável<br /><input type="text" name="ownerName" value="<%= pet?.ownerName || '' %>" /></label>
+        <label>Endereço<br /><input type="text" name="ownerAddress" value="<%= pet?.ownerAddress || '' %>" /></label>
+        <label>Contato<br /><input type="tel" name="ownerPhone" value="<%= pet?.ownerPhone || '' %>" /></label>
+      </section>
+
+      <section>
+        <h2>Vacinas</h2>
+        <% const vaccines = pet?.vaccines || [] %>
+        <% for (let i = 0; i < 2; i += 1) { %>
+          <div class="vaccine-row">
+            <label>Nome da vacina<br /><input type="text" name="vaccineName[]" value="<%= vaccines[i]?.name || '' %>" /></label>
+            <label>Data aplicada<br /><input type="date" name="vaccineAppliedDate[]" value="<%= vaccines[i]?.appliedDate || '' %>" /></label>
+            <label>Próxima data<br /><input type="date" name="vaccineNextDate[]" value="<%= vaccines[i]?.nextDate || '' %>" /></label>
+          </div>
+        <% } %>
+        <label>Dias antes do alerta<br /><input type="number" name="nextVaccineAlertDays" min="0" value="<%= pet?.nextVaccineAlertDays ?? 7 %>" /></label>
+      </section>
+
+      <section>
+        <h2>Banho e tosa</h2>
+        <label>Data do último banho<br /><input type="date" name="bathDate" value="<%= pet?.bathDate || '' %>" /></label>
+        <label>Data do último serviço de tosa<br /><input type="date" name="groomingDate" value="<%= pet?.groomingDate || '' %>" /></label>
+      </section>
+
+      <section>
+        <h2>Serviço externo</h2>
+        <label>Local do serviço<br /><input type="text" name="serviceLocation" value="<%= pet?.serviceLocation || '' %>" /></label>
+        <label>Contato do serviço<br /><input type="text" name="serviceContact" value="<%= pet?.serviceContact || '' %>" /></label>
+        <label>Hora de saída<br /><input type="text" name="serviceDeparture" value="<%= pet?.serviceDeparture || '' %>" placeholder="Ex: 09:00" /></label>
+        <label>Hora de chegada<br /><input type="text" name="serviceReturn" value="<%= pet?.serviceReturn || '' %>" placeholder="Ex: 12:00" /></label>
+      </section>
+
+      <section>
+        <h2>Observações</h2>
+        <label>Notas<br /><textarea name="notes" rows="4"><%= pet?.notes || '' %></textarea></label>
+      </section>
+
+      <div class="form-actions">
+        <button type="submit" class="button">Salvar</button>
+        <a class="button button-secondary" href="/pets">Cancelar</a>
+      </div>
+    </form>
+  </main>
+</body>
+</html>

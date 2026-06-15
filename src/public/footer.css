@@ -1,0 +1,15 @@
+.main-footer {
+    background-color: #2d3436;
+    color: #f7f9fc;
+    padding: 2rem 5%;
+    text-align: center;
+    margin-top: 40px;
+    font-size: 0.9rem;
+}
+
+.footer-content p { margin: 5px 0; opacity: 0.8; }
+
+.footer-brand {
+    color: #ff9f43;
+    font-weight: bold;
+}

@@ -1,0 +1,30 @@
+.login-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+    padding: 20px;
+}
+
+.auth-card {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 400px;
+}
+
+.auth-card h1 {
+    color: #ff9f43;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 2rem;
+}
+
+.auth-links {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+.auth-links a { color: #54a0ff; text-decoration: none; font-weight: bold; }
