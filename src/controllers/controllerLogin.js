@@ -16,11 +16,12 @@
         export const validarLogin = async (req, res) => {
             const{email, senha} = req.body
             if(!email || !senha) return res.status(400).json({mensagem: "Preencha todos os campos!"})
+                console.log ("entrou")
             try{
 
                 const usuario = await User.findOne({where: {email: email}})
                 if(!usuario) return res.status(400).json({mensagem: "Usuário não encontrado!"})
-                
+                 console.log ("entrou2")
         
             const senhaDescript = await bcrypt.compare(senha, usuario.senha)
             // console.log(senhaDescript)
