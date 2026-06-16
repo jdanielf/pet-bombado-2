@@ -67,7 +67,7 @@
 
 
             }catch(err){
-                res.status(500).json({mensagem: 'Erro no servidor!'})
+                res.status(500).json({mensagem: 'tese de erro servidor!'})
             }
         }
 
