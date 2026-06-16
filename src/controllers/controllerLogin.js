@@ -68,8 +68,8 @@
 
             }catch(err){
                 console.error(err)
-                res.status(500).json({mensagem: 'tese de erro servidor!'},
-                       erro: err.message
+                res.status(500).json({mensagem: 'tese de erro servidor!',erro: err.message},
+                       
                 )
             }
         }
