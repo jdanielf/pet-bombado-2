@@ -3,6 +3,8 @@
         import bcrypt from 'bcrypt'
         import session from 'express-session'
         import jwt from 'jsonwebtoken'
+        import dotenv from 'dotenv'
+        dotenv.config()         
           
         const __dirname = path.resolve()
 
@@ -42,7 +44,7 @@
                 // })
 
              console.log ("entrou")
-                const token =jwt.sign(
+                const token =  jwt.sign(
                     {
                        id: usuario.idUser,
                         nome: usuario.nome,
@@ -54,7 +56,7 @@
                     
                     {
                         expiresIn: '1h',
-                        algorithms: 'HS256',
+                        algorithm: 'HS256',
                         issuer: 'sys-pet-wallet',
                     }
                 )

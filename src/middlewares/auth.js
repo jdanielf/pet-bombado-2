@@ -17,16 +17,17 @@ export const autenticar = async (req, res, next) => {
     // }
 
     if(!req.cookies.token)return res.redirect('/login')
-        try{
+    try{
             // Use process.env.JWT_SECRET para consistência com o login
             const usuario = jwt.verify(req.cookies.token, process.env.JWT_SECRET || 'JWT_SECRET')
             req.usuario = usuario
-        }catch(err){
+            next()
+    }catch(err){
             return res.redirect('/login')
-        }
+    }
     
       
-        next()
+        
 }
 
 
