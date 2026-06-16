@@ -43,7 +43,7 @@
                 //         subtitle: 'Registre vacinas, banho, tosa e serviços para cães e gatos'})
                 // })
 
-             console.log ("entrou")
+             
                 const token =  jwt.sign(
                     {
                        id: usuario.idUser,
@@ -60,14 +60,17 @@
                         issuer: 'sys-pet-wallet',
                     }
                 )
-                    console.log ("entrou2")
+                    
                 res.cookie('token', token, {httpOnly: true, secure: true , maxAge:1000 * 60 * 60})
                 res.render('index', {usuario: usuario.nome, title: 'Carteira de Pets',
                 subtitle: 'Registre vacinas, banho, tosa e serviços para cães e gatos'})
 
 
             }catch(err){
-                res.status(500).json({mensagem: 'tese de erro servidor!'})
+                console.error(err)
+                res.status(500).json({mensagem: 'tese de erro servidor!'},
+                       erro: err.message
+                )
             }
         }
 
