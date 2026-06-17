@@ -71,7 +71,7 @@ app.use(routerLogin)
 
 
 app.get('/', (req, res) => {
-res.redirect('/cadastroUsuario')
+res.redirect('/login')
 
 
   // res.render('index', {
