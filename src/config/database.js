@@ -40,6 +40,7 @@ if(process.env.MODE_NODE ==='dev'){
     })
   }else{
      console.log('Modo:' ,process.env.MODE_NODE)
+     
       sequelize = new Sequelize(process.env.DATABASE_URL,
       {
         dialect: 'postgres',

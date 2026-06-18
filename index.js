@@ -9,7 +9,7 @@ import routerUser from './src/routers/rotaUser.js'
 import routerLogin from './src/routers/routerLogin.js'
 import session from 'express-session'
 import connectSqlite from 'connect-sqlite3'
-import { apagarCache } from './src/middlewares/auth.js'
+import { autenticar, apagarCache } from './src/middlewares/auth.js'
 import cookieParser from 'cookie-parser'
 
 
@@ -70,15 +70,12 @@ app.use(routerLogin)
 
 
 
-app.get('/', (req, res) => {
-res.redirect('/login')
-
-
-  // res.render('index', {
-  //   usuario: 'visitante',
-  //   title: 'Carteira de Pets',
-  //   subtitle: 'Registre vacinas, banho, tosa e serviços para cães e gatos'
-  // })
+app.get('/', autenticar, (req, res) => {
+  res.render('index', {
+    usuario: req.usuario.nome || 'Usuário',
+    title: 'Carteira de Pets',
+    subtitle: 'Registre vacinas, banho, tosa e serviços para cães e gatos'
+  })
 })
 
 await sincronizarDB()

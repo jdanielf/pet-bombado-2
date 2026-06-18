@@ -7,27 +7,26 @@ const perfils = ['cliente', 'petshop', 'admin']
 
 export const autenticar = async (req, res, next) => {
 
-    // if(!req.session.usuario)return res.redirect('/login')
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private')
+    res.set('Pragma', 'no-cache')
+    res.set('Expires', '0')
 
-    // const usuario = await User.findById(req.session.usuario.id)
-    // if (!usuario){
-    //     req.session.destroy (() => {})
-    //     return res.status(401).json({msg: 'Usuário não encontrado'})
+    if (!req.cookies.token) return res.redirect('/login')
 
-    // }
+    try {
+        const usuario = jwt.verify(
+            req.cookies.token,
+            process.env.JWT_SECRET
+        )
 
-    if(!req.cookies.token)return res.redirect('/login')
-    try{
-            // Use process.env.JWT_SECRET para consistência com o login
-            const usuario = jwt.verify(req.cookies.token, process.env.JWT_SECRET || 'JWT_SECRET')
-            req.usuario = usuario
-            next()
-    }catch(err){
-            return res.redirect('/login')
+        req.usuario = usuario
+        next()
+
+    } catch (err) {
+
+        res.clearCookie('token')
+        return res.redirect('/login')
     }
-    
-      
-        
 }
 
 

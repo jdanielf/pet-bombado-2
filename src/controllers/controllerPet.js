@@ -33,21 +33,35 @@ const showNewPetForm = (req, res) => {
     title: 'Cadastrar Pet',
     pet: null,
     action: '/pets',
-    method: 'POST'
+    method: 'POST',
+    perfil: req.usuario.perfil
   })
 }
 
 const createPet = async (req, res) => {
   const vaccines = buildVaccines(req.body)
+
+  let ownerName = null
+  let ownerAddress = null
+  let ownerPhone = null
+
+  if (req.usuario.perfil === 'petshop') {
+    ownerName = req.body.ownerName
+    ownerAddress = req.body.ownerAddress
+    ownerPhone = req.body.ownerPhone
+  }
+
   await Pet.create({
     name: req.body.name,
     species: req.body.species,
     breed: req.body.breed,
     gender: req.body.gender,
     birthDate: req.body.birthDate || null,
-    ownerName: req.body.ownerName,
-    ownerAddress: req.body.ownerAddress,
-    ownerPhone: req.body.ownerPhone,
+
+    ownerName,
+    ownerAddress,
+    ownerPhone,
+
     vaccines,
     nextVaccineAlertDays: Number(req.body.nextVaccineAlertDays) || 7,
     bathDate: req.body.bathDate || null,
@@ -58,6 +72,7 @@ const createPet = async (req, res) => {
     serviceReturn: req.body.serviceReturn,
     notes: req.body.notes
   })
+
   res.redirect('/pets')
 }
 
@@ -69,12 +84,20 @@ const viewPetDetails = async (req, res) => {
 
 const showEditPetForm = async (req, res) => {
   const pet = await Pet.findByPk(req.params.id)
-  if (!pet) return res.status(404).render('error', { title: 'Pet não encontrado', message: 'Pet não localizado.' })
+
+  if (!pet) {
+    return res.status(404).render('error', {
+      title: 'Pet não encontrado',
+      message: 'Pet não localizado.'
+    })
+  }
+
   res.render('petForm', {
     title: `Editar ${pet.name}`,
     pet,
     action: `/pets/${pet.id}`,
-    method: 'POST'
+    method: 'POST',
+    perfil: req.usuario.perfil
   })
 }
 

@@ -11,23 +11,44 @@
 
 
         export const login = (req, res) => {
+            // Removido o redirecionamento automático para evitar loops infinitos se o token for inválido
             res.sendFile(path.join(__dirname, 'src', 'public', 'login.html'))
         }
 
 
         export const validarLogin = async (req, res) => {
             const{email, senha} = req.body
-            if(!email || !senha) return res.status(400).json({mensagem: "Preencha todos os campos!"})
+            if(!email || !senha) {
+                return res.send(`
+                    <script>
+                        alert('Preencha todos os campos!');
+                        window.location.href = '/login';
+                    </script>
+                `);
+            }
                
             try{
 
                 const usuario = await User.findOne({where: {email: email}})
-                if(!usuario) return res.status(400).json({mensagem: "Usuário não encontrado!"})
+                if(!usuario) {
+                    return res.send(`
+                        <script>
+                            alert('Usuário não cadastrado!');
+                            window.location.href = '/login';
+                        </script>
+                    `);
+                }
                  
         
             const senhaDescript = await bcrypt.compare(senha, usuario.senha)
-            // console.log(senhaDescript)
-            if(!senhaDescript ) return res.status(400).json({mensagem: "Senha Inválida!"})
+            if(!senhaDescript) {
+                return res.send(`
+                    <script>
+                        alert('Senha Inválida!');
+                        window.location.href = '/login';
+                    </script>
+                `);
+            }
 
                 // req.session.regenerate((err) =>  {
                 //     if(err) return res.status(500).json({mensagem: 'Erro no servidor!'})
@@ -61,35 +82,28 @@
                     }
                 )
                     
-                res.cookie('token', token, {httpOnly: true, secure: true , maxAge:1000 * 60 * 60})
-                res.render('index', {usuario: usuario.nome, title: 'Carteira de Pets',
-                subtitle: 'Registre vacinas, banho, tosa e serviços para cães e gatos'})
-
+                // REMOVIDO secure: true para funcionar em localhost
+                res.cookie('token', token, { 
+                    httpOnly: true, 
+                    maxAge: 1000 * 60 * 60,
+                    path: '/' 
+                })
+                
+                res.redirect('/')
 
             }catch(err){
                 console.error(err)
-                res.status(500).json({mensagem: 'tese de erro servidor!',erro: err.message},
-                       
-                )
+                res.status(500).json({mensagem: 'Erro no servidor!', erro: err.message})
             }
         }
 
 
         export const logout = (req, res) => {
-            // req.session.destroy((err) => {
-            //     if(err) return res.status(500).json({mensagem: 'Erro no servidor!'})
-            //         res.clearCookie('connect.sid')
-            //     res.redirect('/login')
-            // })
-            res.clearCookie('token', 
-                {
-                    httpOnly: true,
-                    secure: true,
-                    maxAge: 1000 * 60 * 60
-                } )
-
-                return res.redirect('/login')
-
+            // Limpa o token e a sessão de forma limpa
+            res.clearCookie('token', { path: '/' });
+            res.clearCookie('connect.sid', { path: '/' });
+            
+            return res.redirect('/login');
         }
 
 

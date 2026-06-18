@@ -25,12 +25,26 @@
         <label>Data de nascimento<br /><input type="date" name="birthDate" value="<%= pet?.birthDate || '' %>" /></label>
       </section>
 
-      <section>
-        <h2>Dados do dono</h2>
-        <label>Nome do responsável<br /><input type="text" name="ownerName" value="<%= pet?.ownerName || '' %>" /></label>
-        <label>Endereço<br /><input type="text" name="ownerAddress" value="<%= pet?.ownerAddress || '' %>" /></label>
-        <label>Contato<br /><input type="tel" name="ownerPhone" value="<%= pet?.ownerPhone || '' %>" /></label>
-      </section>
+      <% if (perfil === 'petshop') { %>
+
+<section>
+  <h2>Dados do dono</h2>
+
+  <label>Nome do responsável<br />
+    <input type="text" name="ownerName" value="<%= pet?.ownerName || '' %>" />
+  </label>
+
+  <label>Endereço<br />
+    <input type="text" name="ownerAddress" value="<%= pet?.ownerAddress || '' %>" />
+  </label>
+
+  <label>Contato<br />
+    <input type="tel" name="ownerPhone" value="<%= pet?.ownerPhone || '' %>" />
+  </label>
+
+</section>
+
+<% } %>
 
       <section>
         <h2>Vacinas</h2>
